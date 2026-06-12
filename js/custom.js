@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         var form = document.createElement('form');
-        form.action = 'https://formsubmit.co/gaur.gulshan@gail.com';
+        form.action = 'https://formsubmit.co/gaur.gulshan@gmail.com';
         form.method = 'POST';
         form.target = frameName;
         form.style.display = 'none';
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ['_captcha', 'false'],
             ['_template', 'table'],
             ['_subject', 'New Membership Registration: ' + membershipId],
-            ['_cc', 'guria.gaur@gail.com'],
+            ['_cc', 'guria.gaur@gmail.com'],
             ['name', name],
             ['email', email],
             ['phone', phone],
