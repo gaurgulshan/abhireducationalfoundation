@@ -398,43 +398,66 @@ document.addEventListener("DOMContentLoaded", function () {
                 y
             );
 
-            // ===== SIGNATURE (RIGHT) =====
-            doc.line(
-                pageWidth - 180,
-                y - 10,
-                pageWidth - 60,
-                y - 10
-            );
+            // ===== SIGNATURE IMAGE (RIGHT) =====
 
-            doc.setFont("helvetica", "bold");
+            var signature = new Image();
 
-            doc.text(
-                "Bharti",
-                pageWidth - 170,
-                y + 10
-            );
+            signature.crossOrigin = "Anonymous";
+            signature.src = "https://abhireducationalfoundation.org/images/signature.jpg";
 
-            doc.setFont("helvetica", "normal");
+            signature.onload = function () {
 
-            doc.text(
-                "Authorized Signatory",
-                pageWidth - 170,
-                y + 28
-            );
+                try {
+                    doc.addImage(
+                        signature,
+                        "JPEG",
+                        pageWidth - 190, // left-right position
+                        y - 55,          // line ke upar
+                        110,             // width
+                        45               // height
+                    );
+                } catch (e) {
+                    console.log(e);
+                }
 
-            // Footer
-            doc.setFontSize(10);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
 
-            doc.text(
-                "This certificate is system generated and valid without physical signature.",
-                pageWidth / 2,
-                pageHeight - 35,
-                { align: "center" }
-            );
+                doc.text(
+                    "Authorized Signatory",
+                    pageWidth - 170,
+                    y
+                );
 
-            doc.save(
-                'Membership-Certificate-' + membershipId + '.pdf'
-            );
+                // Footer
+                doc.setFontSize(10);
+
+                doc.text(
+                    "This certificate is system generated and valid without physical signature.",
+                    pageWidth / 2,
+                    pageHeight - 35,
+                    { align: "center" }
+                );
+
+                doc.save(
+                    'Membership-Certificate-' + membershipId + '.pdf'
+                );
+            };
+
+            signature.onerror = function () {
+
+                doc.setFont("helvetica", "normal");
+
+                doc.text(
+                    "Authorized Signatory",
+                    pageWidth - 170,
+                    y + 20
+                );
+
+                doc.save(
+                    'Membership-Certificate-' + membershipId + '.pdf'
+                );
+            };
         }
     }
 

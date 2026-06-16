@@ -9827,7 +9827,7 @@ textarea {
     .sec-features .feature p:last-child {
       margin-bottom: 0; }
 
-.sec-services {
+.sec-services, .bg1 {
   background: rgba(0, 0, 0, 0.05); }
 
 .service {
@@ -10319,4 +10319,30 @@ textarea {
   background: transparent;
     border-color: #fff;
     color: #fff;
+}
+.proof-box{
+    background:#fff;
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+    padding:25px;
+    text-align:center;
+    height:100%;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.proof-box h4{
+    color:#306EE8;
+    margin-bottom:15px;
+    font-weight:600;
+}
+
+.proof-box p{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.proof-box span{
+    font-size:14px;
+    color:#666;
 }
