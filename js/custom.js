@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", function () {
             doc.setFont("helvetica", "bold");
 
             doc.text(
-                "ASHISH KUMAR JHA",
+                "Bharti",
                 pageWidth - 170,
                 y + 10
             );
