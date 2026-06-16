@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })();
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
         fadeOut(loader);
         fadeOut(overlay);
     }, 200);
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             var membershipId = generateMembershipId();
             var certificateText = buildCertificateText(name, email, phone, city, membershipId);
-            downloadCertificate(certificateText, membershipId);
+            downloadCertificate(certificateText, membershipId, name, email, phone, city);
             triggerEmailNotification(name, email, phone, city, membershipId);
 
             var membershipModal = document.getElementById('membershipModal');
@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         var form = document.createElement('form');
-        form.action = 'https://formsubmit.co/gaur.gulshan@gmail.com';
+        form.action = 'https://formsubmit.co/abhireducationalfoundation@gmail.com';
         form.method = 'POST';
         form.target = frameName;
         form.style.display = 'none';
@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ['_captcha', 'false'],
             ['_template', 'table'],
             ['_subject', 'New Membership Registration: ' + membershipId],
-            ['_cc', 'guria.gaur@gmail.com'],
+            ['_cc', 'gaur.gulshan@gmail.com'],
             ['name', name],
             ['email', email],
             ['phone', phone],
@@ -197,87 +197,407 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 5000);
     }
 
-    function downloadCertificate(content, membershipId) {
+    function downloadCertificate(content, membershipId, name, email, phone, city) {
+
         var jsPDF = window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : window.jsPDF;
+
         if (!jsPDF) {
-            alert('PDF library not loaded. Please try again later.');
+            alert('PDF library not loaded.');
             return;
         }
 
-        var doc = new jsPDF({ unit: 'pt', format: 'a4' });
-        var lineHeight = 22;
-        var margin = 40;
-        var x = margin;
-        var y = 10;
-        var pageWidth = doc.internal.pageSize.getWidth();
+        var doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'pt',
+            format: 'a4'
+        });
 
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // Border
+        doc.setDrawColor(180, 140, 40);
+        doc.setLineWidth(3);
+        doc.rect(20, 20, pageWidth - 40, pageHeight - 40);
+
+        doc.setLineWidth(1);
+        doc.rect(30, 30, pageWidth - 60, pageHeight - 60);
+
+        // Watermark
+        doc.setTextColor(245, 245, 245);
+        doc.setFontSize(70);
+        doc.text("AEF", pageWidth / 2, pageHeight / 2, {
+            align: "center",
+            angle: 45
+        });
+
+        // Reset color
+        doc.setTextColor(0, 0, 0);
+
+        // Logo
         var logo = new Image();
         logo.src = 'images/logo-new.png';
+
         logo.onload = function () {
-            var logoWidth = 120;
-            var logoHeight = 120;
-            var logoX = (pageWidth - logoWidth) / 2;
 
             try {
-                doc.addImage(logo, 'PNG', logoX, y, logoWidth, logoHeight);
-            } catch (error) {
-                console.warn('Logo could not be embedded in PDF:', error);
-            }
+                doc.addImage(
+                    logo,
+                    'PNG',
+                    (pageWidth - 90) / 2,
+                    45,
+                    90,
+                    90
+                );
+            } catch (e) { }
 
-            y += logoHeight + 20;
-            renderCertificateText(doc, content, membershipId, x, y, lineHeight);
-            doc.save('Membership-Certificate-' + membershipId + '.pdf');
+            generatePdf();
         };
 
         logo.onerror = function () {
-            y += 0;
-            renderCertificateText(doc, content, membershipId, x, y, lineHeight);
-            doc.save('Membership-Certificate-' + membershipId + '.pdf');
+            generatePdf();
         };
+
+        function generatePdf() {
+
+            let y = 170;
+
+            // Foundation Name
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+
+            doc.text(
+                "ABHIR EDUCATIONAL FOUNDATION",
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            y += 35;
+
+            // Certificate Heading
+            doc.setTextColor(180, 140, 40);
+
+            doc.setFontSize(20);
+
+            doc.text(
+                "MEMBERSHIP CERTIFICATE",
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            doc.setTextColor(0, 0, 0);
+
+            y += 55;
+
+            // Presented To
+            doc.setFont("times", "italic");
+            doc.setFontSize(14);
+
+            doc.text(
+                "This certificate is proudly presented to",
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            y += 40;
+
+            // Member Name
+            doc.setFont("times", "bold");
+            doc.setFontSize(28);
+
+            doc.text(
+                name.toUpperCase(),
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            y += 35;
+
+            doc.setFont("times", "normal");
+            doc.setFontSize(14);
+
+            doc.text(
+                "for becoming an official member of",
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            y += 25;
+
+            doc.setFont("times", "bold");
+            doc.setFontSize(18);
+
+            doc.text(
+                "ABHIR EDUCATIONAL FOUNDATION",
+                pageWidth / 2,
+                y,
+                { align: "center" }
+            );
+
+            y += 50;
+
+            // Details Box
+            doc.roundedRect(
+                90,
+                y,
+                pageWidth - 180,
+                140,
+                5,
+                5
+            );
+
+            let boxY = y + 25;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+
+            doc.text(
+                "Membership ID: " + membershipId,
+                110,
+                boxY
+            );
+
+            boxY += 25;
+
+            doc.text(
+                "Email: " + email,
+                110,
+                boxY
+            );
+
+            boxY += 25;
+
+            doc.text(
+                "Phone: " + phone,
+                110,
+                boxY
+            );
+
+            boxY += 25;
+
+            doc.text(
+                "City: " + city,
+                110,
+                boxY
+            );
+
+            y += 220;
+
+            // ===== ISSUE DATE (LEFT) =====
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+
+            doc.text(
+                "Issue Date: " + new Date().toLocaleDateString('en-IN'),
+                80,
+                y
+            );
+
+            // ===== SIGNATURE (RIGHT) =====
+            doc.line(
+                pageWidth - 180,
+                y - 10,
+                pageWidth - 60,
+                y - 10
+            );
+
+            doc.setFont("helvetica", "bold");
+
+            doc.text(
+                "ASHISH KUMAR JHA",
+                pageWidth - 170,
+                y + 10
+            );
+
+            doc.setFont("helvetica", "normal");
+
+            doc.text(
+                "Authorized Signatory",
+                pageWidth - 170,
+                y + 28
+            );
+
+            // Footer
+            doc.setFontSize(10);
+
+            doc.text(
+                "This certificate is system generated and valid without physical signature.",
+                pageWidth / 2,
+                pageHeight - 35,
+                { align: "center" }
+            );
+
+            doc.save(
+                'Membership-Certificate-' + membershipId + '.pdf'
+            );
+        }
     }
 
     function renderCertificateText(doc, content, membershipId, x, y, lineHeight) {
-        var pageWidth = doc.internal.pageSize.getWidth();
-        
-        y += 20;
-        doc.setFontSize(24);
-        doc.setFont('helvetica', 'bold');
-        var orgText = 'Abhir Educational Foundation';
-        var orgWidth = doc.getTextWidth(orgText);
-        doc.text(orgText, (pageWidth - orgWidth) / 2, y);
 
-        y += 30;
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+
+        // ===== BORDER =====
+        doc.setDrawColor(180, 140, 40);
+        doc.setLineWidth(3);
+        doc.rect(20, 20, pageWidth - 40, pageHeight - 40);
+
+        doc.setLineWidth(1);
+        doc.rect(30, 30, pageWidth - 60, pageHeight - 60);
+
+        // ===== WATERMARK =====
+        doc.setTextColor(240, 240, 240);
+        doc.setFontSize(60);
+        doc.text("AEF", pageWidth / 2, pageHeight / 2, {
+            align: "center",
+            angle: 45
+        });
+
+        // ===== TITLE =====
+        doc.setTextColor(0, 0, 0);
+
+        y += 20;
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(28);
+
+        doc.text(
+            "ABHIR EDUCATIONAL FOUNDATION",
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
+
+        y += 35;
+
+        doc.setFontSize(22);
+        doc.setTextColor(180, 140, 40);
+
+        doc.text(
+            "MEMBERSHIP CERTIFICATE",
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
+
+        y += 50;
+
+        // ===== CERTIFICATE TEXT =====
+        doc.setTextColor(0, 0, 0);
+
+        doc.setFont("times", "italic");
+        doc.setFontSize(16);
+
+        doc.text(
+            "This certificate is proudly presented to",
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
+
+        y += 40;
+
+        // ===== MEMBER NAME =====
+        const memberName =
+            document.getElementById('memberName').value;
+
+        doc.setFont("times", "bold");
+        doc.setFontSize(28);
+
+        doc.text(
+            memberName.toUpperCase(),
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
+
+        y += 35;
+
+        doc.setFont("times", "normal");
+        doc.setFontSize(14);
+
+        doc.text(
+            "for becoming an official member of",
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
+
+        y += 25;
+
+        doc.setFont("times", "bold");
         doc.setFontSize(18);
-        doc.setFont('helvetica', 'normal');
-        var certText = 'Membership Certificate';
-        var certWidth = doc.getTextWidth(certText);
-        doc.text(certText, (pageWidth - certWidth) / 2, y);
+
+        doc.text(
+            "ABHIR EDUCATIONAL FOUNDATION",
+            pageWidth / 2,
+            y,
+            { align: "center" }
+        );
 
         y += 60;
+
+        // ===== DETAILS BOX =====
+        doc.roundedRect(100, y, pageWidth - 200, 120, 5, 5);
+
+        let boxY = y + 25;
+
+        const email = document.getElementById('memberEmail').value;
+        const phone = document.getElementById('memberPhone').value;
+        const city = document.getElementById('memberCity').value;
+
         doc.setFontSize(12);
-        var lines = content.split('\n');
-        lines.forEach(function (line) {
-            if (line.trim() === '') {
-                y += lineHeight / 2;
-                return;
-            }
 
-            var parts = line.split(': ');
-            if (parts.length > 1) {
-                var label = parts[0] + ': ';
-                var value = parts.slice(1).join(': ');
+        doc.text(`Membership ID: ${membershipId}`, 120, boxY);
+        boxY += 25;
 
-                doc.setFont('helvetica', 'bold');
-                doc.text(label, x, y);
-                var labelWidth = doc.getTextWidth(label);
-                doc.setFont('helvetica', 'normal');
-                doc.text(value, x + labelWidth, y);
-            } else {
-                doc.setFont('helvetica', 'normal');
-                doc.text(line, x, y);
-            }
+        doc.text(`Email: ${email}`, 120, boxY);
+        boxY += 25;
 
-            y += lineHeight;
-        });
+        doc.text(`Phone: ${phone}`, 120, boxY);
+        boxY += 25;
+
+        doc.text(`City: ${city}`, 120, boxY);
+
+        y += 180;
+
+        // ===== DATE =====
+        doc.setFontSize(12);
+
+        doc.text(
+            "Issue Date: " + new Date().toLocaleDateString('en-IN'),
+            80,
+            y
+        );
+
+        // ===== SIGNATURE =====
+        doc.line(
+            pageWidth - 180,
+            y - 10,
+            pageWidth - 60,
+            y - 10
+        );
+
+        doc.text(
+            "Authorized Signatory",
+            pageWidth - 170,
+            y + 10
+        );
+
+        // ===== FOOTER =====
+        doc.setFontSize(10);
+
+        doc.text(
+            "This certificate is system generated and does not require a physical signature.",
+            pageWidth / 2,
+            pageHeight - 40,
+            { align: "center" }
+        );
     }
 });
