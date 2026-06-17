@@ -9177,22 +9177,13 @@ textarea.form-control-lg {
 .position-relative {
   position: relative; }
 
-.call-us {
-  color: #fff; }
   @media (max-width: 991.98px) {
     .call-us {
       display: none !important; } }
   .call-us [class^="icon-"] {
-    color: #fff;
-    width: 40px;
-    height: 40px;
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 40px;
     flex: 0 0 40px;
     line-height: 36px;
-    background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    margin-right: 10px;
     text-align: center;
     border: 2px solid transparent;
     -webkit-transition: .3s all ease;
@@ -9215,12 +9206,10 @@ textarea.form-control-lg {
 
 .site-nav {
   position: absolute;
-  top: 10px;
+  background: #fff;
   z-index: 9;
   width: 100%; }
 
-.site-nav {
-  padding-bottom: 20px; }
   .site-nav h1, .site-nav .h1 {
     margin: 0;
     padding: 0;
@@ -9232,14 +9221,11 @@ textarea.form-control-lg {
       display: inline-block; }
       .site-nav .site-navigation .site-menu > li > a {
         font-size: 16px;
+        font-weight: 600;
+        color: #1A3B68;
         padding: 10px 10px;
         display: inline-block;
-        text-decoration: none !important;
-        color: rgba(255, 255, 255, 0.7); }
-        .site-nav .site-navigation .site-menu > li > a:hover {
-          color: #fff; }
-      .site-nav .site-navigation .site-menu > li.active > a {
-        color: #fff; }
+        text-decoration: none !important; }
     .site-nav .site-navigation .site-menu .has-children {
       position: relative; }
       .site-nav .site-navigation .site-menu .has-children > a {
@@ -9534,7 +9520,10 @@ textarea.form-control-lg {
   cursor: pointer;
   position: relative; }
   .burger.light:before, .burger.light span, .burger.light:after {
-    background: #fff; }
+    background: #1A3B68; }
+    #membershipModal{
+      z-index: 9999 !important;
+    }
 
 .burger:before, .burger span, .burger:after {
   width: 100%;
@@ -10278,7 +10267,16 @@ textarea {
         background: #fff;
         color: #306EE8; }
 .logo img{
-  width: 160px;
+  width: 80px;
+}
+@media (min-width: 768px) {
+  .logo img{
+    width: 100px;
+  }
+}
+.call-us{
+  color: #1A3B68;
+  font-weight: 600;
 }
 .service p.mb-4{
   min-height: 100px;

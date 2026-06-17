@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     'use strict';
+    
 
     // ------------------ AOS ------------------
     AOS.init({
@@ -623,4 +624,5 @@ document.addEventListener("DOMContentLoaded", function () {
             { align: "center" }
         );
     }
+    
 });
